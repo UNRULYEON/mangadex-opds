@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "mangadex-opds",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
