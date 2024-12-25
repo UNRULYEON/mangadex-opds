@@ -10,13 +10,26 @@ export const all = ({
   limit = 10,
   offset = 0,
   title,
+  includes,
+  contentRating,
   order,
   hasAvailableChapters,
 }: {
   limit?: number;
   offset?: number;
   title?: string;
+  includes?: {
+    user?: boolean;
+    scanlationGroup?: boolean;
+    manga?: boolean;
+  };
+  contentRating?: {
+    safe?: boolean;
+    suggestive?: boolean;
+    erotica?: boolean;
+  };
   order?: {
+    reabableAt?: 'asc' | 'desc';
     createdAt?: 'asc' | 'desc';
     updatedAt?: 'asc' | 'desc';
   };
@@ -31,6 +44,28 @@ export const all = ({
     }
     if (title) {
       url.searchParams.append('title', title);
+    }
+    if (includes) {
+      if (includes.user) {
+        url.searchParams.append('includes[]', 'user');
+      }
+      if (includes.scanlationGroup) {
+        url.searchParams.append('includes[]', 'scanlation_group');
+      }
+      if (includes.manga) {
+        url.searchParams.append('includes[]', 'manga');
+      }
+    }
+    if (contentRating) {
+      if (contentRating.safe) {
+        url.searchParams.append('contentRating[]', 'safe');
+      }
+      if (contentRating.suggestive) {
+        url.searchParams.append('contentRating[]', 'suggestive');
+      }
+      if (contentRating.erotica) {
+        url.searchParams.append('contentRating[]', 'erotica');
+      }
     }
     if (order) {
       if (order.createdAt) {

@@ -62,17 +62,23 @@ app.get('/v1.2/catalog', (c: Context) => {
             '@rel': 'alternate',
             '@href': '/v1.2/catalog',
           },
-          {
-            '@type': 'application/opds+json',
-            '@rel': 'alternate',
-            '@href': '/v1.2/catalog',
-          },
         ],
         entry: [
           {
+            title: 'Latest updates',
+            id: 'latestUpdates',
+            content: 'Manga that have been recently updated',
+            link: {
+              '@type':
+                'application/atom+xml;profile=opds-catalog;kind=navigation',
+              '@rel': 'subsection',
+              '@href': '/v1.2/latest-updates',
+            },
+          },
+          {
             title: 'Recently added',
             id: 'keepReading',
-            content: 'Titles recently added to the catalog',
+            content: 'Manga recently added to the catalog',
             link: {
               '@type':
                 'application/atom+xml;profile=opds-catalog;kind=navigation',
@@ -86,16 +92,117 @@ app.get('/v1.2/catalog', (c: Context) => {
   );
 });
 
-app.get('/v1.2/recently-added', async (c: Context) => {
+app.get('/v1.2/latest-updates', async (c: Context) => {
   const page = c.req.query('page');
   const LIMIT = 10;
   const OFFSET = page ? parseInt(page) * LIMIT : 0;
 
-  console.log({
-    PAGE: page,
-    LIMIT,
-    OFFSET,
+  const data = await mangas.get.all({
+    limit: LIMIT,
+    offset: OFFSET,
+    includes: {
+      user: true,
+      scanlationGroup: true,
+      manga: true,
+    },
+    contentRating: {
+      safe: true,
+      suggestive: true,
+      erotica: true,
+    },
+    order: {
+      reabableAt: 'desc',
+    },
   });
+
+  c.header('Content-Type', 'application/xml');
+
+  const links = [
+    {
+      '@type': 'application/atom+xml;profile=opds-catalog;kind=navigation',
+      '@rel': 'self',
+      '@href': '/v1.2/recently-added',
+    },
+    {
+      '@type': 'application/atom+xml;profile=opds-catalog;kind=navigation',
+      '@rel': 'start',
+      '@href': '/v1.2/catalog',
+    },
+    page && {
+      '@type': 'application/atom+xml;profile=opds-catalog;kind=navigation',
+      '@rel': 'previous',
+      '@href': `/v1.2/recently-added?page=${parseInt(page) - 1}`,
+    },
+    // page !== '10' && {
+    {
+      '@type': 'application/atom+xml;profile=opds-catalog;kind=navigation',
+      '@rel': 'next',
+      '@href': `/v1.2/recently-added?page=${parseInt(page ?? '0') + 1}`,
+    },
+  ].filter(Boolean);
+
+  if (!data) {
+    return c.body(
+      stringify({
+        feed: {
+          '@xmlns': 'http://www.w3.org/2005/Atom',
+          id: 'recently-added',
+          title: 'Recently added',
+          updated: new Date().toISOString(),
+          author: {
+            name: 'MangaDex OPDS',
+            uri: 'https://github.com/UNRULYEON/mangadex-opds',
+          },
+          link: [...links],
+        },
+      })
+    );
+  }
+
+  return c.body(
+    stringify({
+      feed: {
+        '@xmlns': 'http://www.w3.org/2005/Atom',
+        id: 'recently-added',
+        title: 'Recently added',
+        updated: new Date().toISOString(),
+        author: {
+          name: 'MangaDex OPDS',
+          uri: 'https://github.com/UNRULYEON/mangadex-opds',
+        },
+        link: [...links],
+        entry: data.map((manga) => ({
+          title: manga.title,
+          id: manga.id,
+          updated: manga.updatedAt,
+          link: [
+            {
+              '@type': 'image/jpg',
+              '@rel': 'http://opds-spec.org/image/thumbnail',
+              '@href': manga.coverUrl,
+            },
+            {
+              '@type': 'image/jpg',
+              '@rel': 'http://opds-spec.org/image',
+              '@href': manga.coverUrl,
+            },
+            {
+              '@type':
+                'application/atom+xml;profile=opds-catalog;kind=navigation',
+              '@rel': 'subsection',
+              '@href': `/v1.2/manga/${manga.id}`,
+            },
+          ],
+        })),
+      },
+    })
+  );
+});
+
+app.get('/v1.2/recently-added', async (c: Context) => {
+  const page = c.req.query('page');
+  const LIMIT = 10;
+  const OFFSET = page ? parseInt(page) * LIMIT : 0;
 
   const data = await mangas.get.all({
     limit: LIMIT,
@@ -292,6 +399,16 @@ app.get('/v1.2/manga/:id', async (c: Context) => {
           title: `${result.title} (${lang.toUpperCase()})`,
           id: lang,
           link: [
+            {
+              '@type': 'image/jpg',
+              '@rel': 'http://opds-spec.org/image/thumbnail',
+              '@href': result.coverUrl,
+            },
+            {
+              '@type': 'image/jpg',
+              '@rel': 'http://opds-spec.org/image',
+              '@href': result.coverUrl,
+            },
             {
               '@type':
                 'application/atom+xml;profile=opds-catalog;kind=navigation',
