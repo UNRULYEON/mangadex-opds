@@ -1,0 +1,21 @@
+meta {
+  name: chapter
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{BASE_URL}}/v1.2/manga/:mangaId/language/:language/chapter/:chapterId
+  body: none
+  auth: none
+}
+
+params:query {
+  ~page: 2
+}
+
+params:path {
+  chapterId: 73af4d8d-1532-4a72-b1b9-8f4e5cd295c9
+  mangaId: en
+  language: a77742b1-befd-49a4-bff5-1ad4e6b0ef7b
+}
