@@ -1,57 +1,24 @@
 import { Hono, Context } from 'hono';
+import { serveStatic } from 'hono/deno'
 import { cache } from 'hono/cache';
 import { stringify } from '@libs/xml/stringify';
 import { mangas, chapters, pages } from '@/repository/index.ts';
 import { compress } from 'hono/compress';
 import { etag } from 'hono/etag';
 import { secureHeaders } from 'hono/secure-headers';
-import { html, raw } from 'hono/html'
 
 const app = new Hono();
 
 app.use(compress());
 app.use('*', etag());
+app.use("*", async (c, next) => {
+  await next();
+  c.header("x-powered-by", "your mom, and mangadex too ig");
+});
 app.use(secureHeaders());
 
-app.get('/', (c: Context) => {
-  return c.html(
-    html`<!doctype html>
-<html lang="en-GB" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>MangaDex OPDS</title>
-    <meta name="description" content="MangaDex OPDS">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      html {
-        background-color: #000000;
-        color: #ffffff;
-      }
-
-      a {
-        color: #ffffff;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>hello, world</h1>
-    <ul>
-    <li><a href="/v1.2/health">/v1.2/health</a></li>
-      <li><a href="/v1.2/catalog">/v1.2/catalog</a></li>
-      <li><a href="/v1.2/latest-updates">/v1.2/latest-updates</a></li>
-      <li><a href="/v1.2/recently-added">/v1.2/recently-added</a></li>
-      <li><a href="/v1.2/search">/v1.2/search</a></li>
-      <li><a href="/v1.2/manga">/v1.2/manga</a></li>
-      <li><a href="/v1.2/manga?search=dandadan">/v1.2/manga?search=dandadan</a></li>
-      <li><a href="/v1.2/manga/68112dc1-2b80-4f20-beb8-2f2a8716a430">/v1.2/manga/:mangaId</a></li>
-      <li><a href="/v1.2/manga/68112dc1-2b80-4f20-beb8-2f2a8716a430/language/en">/v1.2/manga/:mangaId/language/:language</a></li>
-      <li><a href="/v1.2/manga/68112dc1-2b80-4f20-beb8-2f2a8716a430/language/en/chapter/cd68c7f2-de7c-4fdf-a0e4-76a99e640155">/v1.2/manga/:mangaId/language/:language/chapter/:chapterId</a></li>
-      <li><a href="/v1.2/manga/68112dc1-2b80-4f20-beb8-2f2a8716a430/language/en/chapter/cd68c7f2-de7c-4fdf-a0e4-76a99e640155?page=2">/v1.2/manga/:mangaId/language/:language/chapter/:chapterId?page=2</a></li>
-    </ul>
-  </body>
-<html>
-`)
-})
+app.use("/static/*", serveStatic({ root: "./src" }));
+app.get('/', serveStatic({ path: './src/static/index.html' }))
 
 app.get(
   '*',

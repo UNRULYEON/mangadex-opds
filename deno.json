@@ -6,7 +6,7 @@
     "hono": "jsr:@hono/hono@^4.6.14"
   },
   "tasks": {
-    "dev": "deno run --allow-net --watch ./src/main.ts"
+    "dev": "deno run --allow-net --allow-read --watch ./src/main.ts"
   },
   "compilerOptions": {
     "jsx": "precompile",
