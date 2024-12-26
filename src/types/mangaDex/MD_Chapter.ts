@@ -1,6 +1,6 @@
 export type MD_Chapter = {
   id: string;
-  type: 'chapter';
+  type: "chapter";
   attributes: {
     volume: string;
     chapter: string;

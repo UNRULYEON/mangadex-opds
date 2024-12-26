@@ -1,11 +1,11 @@
-import * as zip from '@quentinadam/zip';
+import * as zip from "@quentinadam/zip";
 import {
   Chapter,
   MD_AtHomeChapter,
   MD_Chapter,
   ResponseCollection,
-} from '@/types/index.ts';
-import { mangas } from '@/repository/index.ts';
+} from "@/types/index.ts";
+import { mangas } from "@/repository/index.ts";
 
 const all = ({
   id,
@@ -16,11 +16,11 @@ const all = ({
 }): Promise<Chapter[]> => {
   return new Promise((resolve, reject) => {
     fetch(
-      `https://api.mangadex.org/manga/${id}/feed?translatedLanguage[]=${lang}`
+      `https://api.mangadex.org/manga/${id}/feed?translatedLanguage[]=${lang}`,
     )
       .then(async (res) => {
         if (res.status !== 200) {
-          reject('Error fetching chapters');
+          reject("Error fetching chapters");
         }
 
         const chaptersJson: ResponseCollection<MD_Chapter[]> = await res.json();
@@ -47,7 +47,7 @@ const all = ({
                     result.availableTranslatedLanguages,
                 },
               };
-            })
+            }),
         );
 
         chapters.sort((a, b) => {
@@ -67,13 +67,13 @@ const byId = ({ chapterId }: { chapterId: string }): Promise<Uint8Array> => {
     fetch(`https://api.mangadex.org/at-home/server/${chapterId}`)
       .then(async (res) => {
         if (res.status !== 200) {
-          reject('Error fetching chapter');
+          reject("Error fetching chapter");
         }
 
         const data: MD_AtHomeChapter = await res.json();
 
         if (!data) {
-          reject('Chapter not found');
+          reject("Chapter not found");
         }
 
         const baseUrl = `${data.baseUrl}/data-saver/${data.chapter.hash}`;
@@ -92,7 +92,7 @@ const byId = ({ chapterId }: { chapterId: string }): Promise<Uint8Array> => {
               name: url,
               data: new Uint8Array(await (await response.blob()).arrayBuffer()),
             };
-          })
+          }),
         );
 
         const buffer = await zip.create(files);

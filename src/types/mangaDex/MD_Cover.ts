@@ -1,6 +1,6 @@
 export type MD_Cover = {
   id: string;
-  type: 'cover_art';
+  type: "cover_art";
   attributes: {
     description: string;
     volume: string;
@@ -12,6 +12,6 @@ export type MD_Cover = {
   };
   relationships: {
     id: string;
-    type: 'manga' | 'user';
+    type: "manga" | "user";
   }[];
 };

@@ -1,62 +1,84 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>MangaDex OPDS</title>
+    <link rel="icon" type="image/x-icon" href="/static/rei-plush-favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link
+      rel="stylesheet"
+      href="https://cdn.statically.io/gh/UNRULYEON/design-system/6fdd8e360209f00b24f15f2c14176a68bf436238/packages/raw/reset.css"
+    >
+    <link
+      rel="stylesheet"
+      href="https://cdn.statically.io/gh/UNRULYEON/design-system/0bd2c322f3f3ef7ef46ab63307ce7a090f64b813/packages/raw/index.css"
+    >
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>MangaDex OPDS</title>
-  <link rel="icon" type="image/x-icon" href="/static/rei-plush-favicon.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet"
-    href="https://cdn.statically.io/gh/UNRULYEON/design-system/6fdd8e360209f00b24f15f2c14176a68bf436238/packages/raw/reset.css">
-  <link rel="stylesheet"
-    href="https://cdn.statically.io/gh/UNRULYEON/design-system/0bd2c322f3f3ef7ef46ab63307ce7a090f64b813/packages/raw/index.css">
-</head>
-
-<body>
-  <table class="header">
-    <tr>
-      <td colspan="2" rowspan="2" class="width-auto">
-        <h1 class="title">mangadex-opds</h1>
-        <span class="subtitle">An API that serves content from <a href="https://mangadex.org/"
-            target="_blank">MangaDex</a> in <a href="https://specs.opds.io/opds-1.2.html" target="_blank">OPDS v1.2</a>
-          format</span>
-      </td>
-      <th>Version</th>
-      <td class="width-min">v0.0.1</td>
-    </tr>
-    <tr>
-      <th>Github</th>
-      <td class="width-min"><a href="https://github.com/UNRULYEON/mangadex-opds" target="_blank">mangadex-opds</a></td>
-    </tr>
-  </table>
-  <h1>hello, world</h1>
-  <h2>health</h2>
-  <ul>
-    <li><a href="/health">/health</a></li>
-  </ul>
-  <h2>catalog</h2>
-  <ul>
-    <li><a href="/v1.2/catalog">/v1.2/catalog</a></li>
-    <li><a href="/v1.2/latest-updates">/v1.2/latest-updates</a></li>
-    <li><a href="/v1.2/recently-added">/v1.2/recently-added</a></li>
-  </ul>
-  <h2>search</h2>
-  <li><a href="/v1.2/search">/v1.2/search</a></li>
-  <li><a href="/v1.2/manga?search=dandadan">/v1.2/manga?search=dandadan</a></li>
-  <h2>manga</h2>
-  <li><a href="/v1.2/manga">/v1.2/manga</a></li>
-  <li><a href="/v1.2/manga/68112dc1-2b80-4f20-beb8-2f2a8716a430">/v1.2/manga/:mangaId</a></li>
-  <h2>language</h2>
-  <li><a href="/v1.2/manga/68112dc1-2b80-4f20-beb8-2f2a8716a430/language/en">/v1.2/manga/:mangaId/language/:language</a>
-  </li>
-  <h2>chapter (cbz, attachment)</h2>
-  <li><a
-      href="/v1.2/manga/68112dc1-2b80-4f20-beb8-2f2a8716a430/language/en/chapter/cd68c7f2-de7c-4fdf-a0e4-76a99e640155">/v1.2/manga/:mangaId/language/:language/chapter/:chapterId</a>
-  </li>
-  <h2>page (png, inline)</h2>
-  <li><a
-      href="/v1.2/manga/68112dc1-2b80-4f20-beb8-2f2a8716a430/language/en/chapter/cd68c7f2-de7c-4fdf-a0e4-76a99e640155?page=2">/v1.2/manga/:mangaId/language/:language/chapter/:chapterId?page=2</a>
-  </li>
-</body>
-
+  <body>
+    <table class="header">
+      <tr>
+        <td colspan="2" rowspan="2" class="width-auto">
+          <h1 class="title">mangadex-opds</h1>
+          <span class="subtitle"
+          >An API that serves content from <a
+              href="https://mangadex.org/"
+              target="_blank"
+            >MangaDex</a> in <a
+              href="https://specs.opds.io/opds-1.2.html"
+              target="_blank"
+            >OPDS v1.2</a>
+            format</span>
+        </td>
+        <th>Version</th>
+        <td class="width-min">v0.0.1</td>
+      </tr>
+      <tr>
+        <th>Github</th>
+        <td class="width-min">
+          <a href="https://github.com/UNRULYEON/mangadex-opds" target="_blank"
+          >mangadex-opds</a>
+        </td>
+      </tr>
+    </table>
+    <h1>hello, world</h1>
+    <h2>health</h2>
+    <ul>
+      <li><a href="/health">/health</a></li>
+    </ul>
+    <h2>catalog</h2>
+    <ul>
+      <li><a href="/v1.2/catalog">/v1.2/catalog</a></li>
+      <li><a href="/v1.2/latest-updates">/v1.2/latest-updates</a></li>
+      <li><a href="/v1.2/recently-added">/v1.2/recently-added</a></li>
+    </ul>
+    <h2>search</h2>
+    <li><a href="/v1.2/search">/v1.2/search</a></li>
+    <li>
+      <a href="/v1.2/manga?search=dandadan">/v1.2/manga?search=dandadan</a>
+    </li>
+    <h2>manga</h2>
+    <li><a href="/v1.2/manga">/v1.2/manga</a></li>
+    <li>
+      <a href="/v1.2/manga/68112dc1-2b80-4f20-beb8-2f2a8716a430"
+      >/v1.2/manga/:mangaId</a>
+    </li>
+    <h2>language</h2>
+    <li>
+      <a href="/v1.2/manga/68112dc1-2b80-4f20-beb8-2f2a8716a430/language/en"
+      >/v1.2/manga/:mangaId/language/:language</a>
+    </li>
+    <h2>chapter (cbz, attachment)</h2>
+    <li>
+      <a
+        href="/v1.2/manga/68112dc1-2b80-4f20-beb8-2f2a8716a430/language/en/chapter/cd68c7f2-de7c-4fdf-a0e4-76a99e640155"
+      >/v1.2/manga/:mangaId/language/:language/chapter/:chapterId</a>
+    </li>
+    <h2>page (png, inline)</h2>
+    <li>
+      <a
+        href="/v1.2/manga/68112dc1-2b80-4f20-beb8-2f2a8716a430/language/en/chapter/cd68c7f2-de7c-4fdf-a0e4-76a99e640155?page=2"
+      >/v1.2/manga/:mangaId/language/:language/chapter/:chapterId?page=2</a>
+    </li>
+  </body>
 </html>

@@ -1,4 +1,4 @@
-import { Manga } from '@/types/index.ts';
+import { Manga } from "@/types/index.ts";
 
 export type Chapter = {
   id: string;

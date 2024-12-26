@@ -1,6 +1,6 @@
 export type MD_Manga = {
   id: string;
-  type: 'manga';
+  type: "manga";
   attributes: {
     title: {
       en: string;
@@ -15,6 +15,6 @@ export type MD_Manga = {
   };
   relationships: {
     id: string;
-    type: 'author' | 'artist' | 'cover_art' | 'creator';
+    type: "author" | "artist" | "cover_art" | "creator";
   }[];
 };

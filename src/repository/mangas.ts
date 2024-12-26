@@ -4,7 +4,7 @@ import {
   MD_Manga,
   ResponseCollection,
   ResponseEntity,
-} from '@/types/index.ts';
+} from "@/types/index.ts";
 
 export const all = ({
   limit = 10,
@@ -29,63 +29,63 @@ export const all = ({
     erotica?: boolean;
   };
   order?: {
-    reabableAt?: 'asc' | 'desc';
-    createdAt?: 'asc' | 'desc';
-    updatedAt?: 'asc' | 'desc';
+    reabableAt?: "asc" | "desc";
+    createdAt?: "asc" | "desc";
+    updatedAt?: "asc" | "desc";
   };
   hasAvailableChapters?: boolean;
 }): Promise<Manga[]> => {
   return new Promise((resolve, reject) => {
-    const url = new URL('https://api.mangadex.org/manga');
+    const url = new URL("https://api.mangadex.org/manga");
 
-    url.searchParams.append('limit', limit.toString());
+    url.searchParams.append("limit", limit.toString());
     if (offset) {
-      url.searchParams.append('offset', offset.toString());
+      url.searchParams.append("offset", offset.toString());
     }
     if (title) {
-      url.searchParams.append('title', title);
+      url.searchParams.append("title", title);
     }
     if (includes) {
       if (includes.user) {
-        url.searchParams.append('includes[]', 'user');
+        url.searchParams.append("includes[]", "user");
       }
       if (includes.scanlationGroup) {
-        url.searchParams.append('includes[]', 'scanlation_group');
+        url.searchParams.append("includes[]", "scanlation_group");
       }
       if (includes.manga) {
-        url.searchParams.append('includes[]', 'manga');
+        url.searchParams.append("includes[]", "manga");
       }
     }
     if (contentRating) {
       if (contentRating.safe) {
-        url.searchParams.append('contentRating[]', 'safe');
+        url.searchParams.append("contentRating[]", "safe");
       }
       if (contentRating.suggestive) {
-        url.searchParams.append('contentRating[]', 'suggestive');
+        url.searchParams.append("contentRating[]", "suggestive");
       }
       if (contentRating.erotica) {
-        url.searchParams.append('contentRating[]', 'erotica');
+        url.searchParams.append("contentRating[]", "erotica");
       }
     }
     if (order) {
       if (order.createdAt) {
-        url.searchParams.append('order[createdAt]', order.createdAt);
+        url.searchParams.append("order[createdAt]", order.createdAt);
       }
       if (order.updatedAt) {
-        url.searchParams.append('order[updatedAt]', order.updatedAt);
+        url.searchParams.append("order[updatedAt]", order.updatedAt);
       }
     }
-    if (typeof hasAvailableChapters === 'boolean') {
+    if (typeof hasAvailableChapters === "boolean") {
       url.searchParams.append(
-        'hasAvailableChapters',
-        `${hasAvailableChapters}`
+        "hasAvailableChapters",
+        `${hasAvailableChapters}`,
       );
     }
 
     fetch(url.toString())
       .then(async (res) => {
         if (res.status !== 200) {
-          reject('Error fetching mangas');
+          reject("Error fetching mangas");
         }
 
         const mangaJson: ResponseCollection<MD_Manga[]> = await res.json();
@@ -95,21 +95,22 @@ export const all = ({
             let coverUrl: string | undefined;
 
             const coverRelationship = manga.relationships.find(
-              (relationship) => relationship.type === 'cover_art'
+              (relationship) => relationship.type === "cover_art",
             );
 
             if (coverRelationship) {
               const cover = await fetch(
-                `https://api.mangadex.org/cover/${coverRelationship.id}`
+                `https://api.mangadex.org/cover/${coverRelationship.id}`,
               );
 
               if (cover.status !== 200) {
-                throw new Error('Error fetching cover');
+                throw new Error("Error fetching cover");
               }
 
               const coverJson: ResponseEntity<MD_Cover> = await cover.json();
 
-              coverUrl = `https://mangadex.org/covers/${manga.id}/${coverJson.data.attributes.fileName}`;
+              coverUrl =
+                `https://mangadex.org/covers/${manga.id}/${coverJson.data.attributes.fileName}`;
             }
 
             return {
@@ -120,7 +121,7 @@ export const all = ({
               availableTranslatedLanguages:
                 manga.attributes.availableTranslatedLanguages,
             } as Manga;
-          })
+          }),
         );
 
         resolve(mangas);
@@ -140,11 +141,11 @@ export const recentlyAdded = ({
 }): Promise<Manga[]> => {
   return new Promise((resolve, reject) => {
     fetch(
-      `https://api.mangadex.org/manga?limit=${limit}&offset=${offset}&order[createdAt]=desc&hasAvailableChapters=true`
+      `https://api.mangadex.org/manga?limit=${limit}&offset=${offset}&order[createdAt]=desc&hasAvailableChapters=true`,
     )
       .then(async (res) => {
         if (res.status !== 200) {
-          reject('Error fetching mangas');
+          reject("Error fetching mangas");
         }
 
         const mangaJson: ResponseCollection<MD_Manga[]> = await res.json();
@@ -154,21 +155,22 @@ export const recentlyAdded = ({
             let coverUrl: string | undefined;
 
             const coverRelationship = manga.relationships.find(
-              (relationship) => relationship.type === 'cover_art'
+              (relationship) => relationship.type === "cover_art",
             );
 
             if (coverRelationship) {
               const cover = await fetch(
-                `https://api.mangadex.org/cover/${coverRelationship.id}`
+                `https://api.mangadex.org/cover/${coverRelationship.id}`,
               );
 
               if (cover.status !== 200) {
-                throw new Error('Error fetching cover');
+                throw new Error("Error fetching cover");
               }
 
               const coverJson: ResponseEntity<MD_Cover> = await cover.json();
 
-              coverUrl = `https://mangadex.org/covers/${manga.id}/${coverJson.data.attributes.fileName}`;
+              coverUrl =
+                `https://mangadex.org/covers/${manga.id}/${coverJson.data.attributes.fileName}`;
             }
 
             return {
@@ -179,7 +181,7 @@ export const recentlyAdded = ({
               availableTranslatedLanguages:
                 manga.attributes.availableTranslatedLanguages,
             } as Manga;
-          })
+          }),
         );
 
         resolve(mangas);
@@ -195,7 +197,7 @@ const byId = ({ id }: { id: string }): Promise<Manga> => {
     fetch(`https://api.mangadex.org/manga/${id}`)
       .then(async (res) => {
         if (res.status !== 200) {
-          reject('Error fetching manga');
+          reject("Error fetching manga");
         }
 
         const mangaJson: ResponseEntity<MD_Manga> = await res.json();
@@ -203,21 +205,22 @@ const byId = ({ id }: { id: string }): Promise<Manga> => {
         let coverUrl: string | undefined;
 
         const coverRelationship = mangaJson.data.relationships.find(
-          (relationship) => relationship.type === 'cover_art'
+          (relationship) => relationship.type === "cover_art",
         );
 
         if (coverRelationship) {
           const cover = await fetch(
-            `https://api.mangadex.org/cover/${coverRelationship.id}`
+            `https://api.mangadex.org/cover/${coverRelationship.id}`,
           );
 
           if (cover.status !== 200) {
-            throw new Error('Error fetching cover');
+            throw new Error("Error fetching cover");
           }
 
           const coverJson: ResponseEntity<MD_Cover> = await cover.json();
 
-          coverUrl = `https://mangadex.org/covers/${mangaJson.data.id}/${coverJson.data.attributes.fileName}`;
+          coverUrl =
+            `https://mangadex.org/covers/${mangaJson.data.id}/${coverJson.data.attributes.fileName}`;
         }
 
         resolve({

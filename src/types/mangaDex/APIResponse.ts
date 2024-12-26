@@ -1,12 +1,12 @@
 export type ResponseEntity<T> = {
   result: string;
-  response: 'entity';
+  response: "entity";
   data: T;
 };
 
 export type ResponseCollection<T> = {
   result: string;
-  response: 'collection';
+  response: "collection";
   data: T;
   limit: number;
   offset: number;
