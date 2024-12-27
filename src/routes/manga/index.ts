@@ -31,7 +31,6 @@ manga.get("/", async (c) => {
             "@href": "/v1.2/manga",
           },
         ],
-
         entry: data.map((manga) => ({
           title: manga.title,
           id: manga.id,

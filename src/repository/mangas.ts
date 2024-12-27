@@ -10,6 +10,7 @@ export const all = ({
   limit = 10,
   offset = 0,
   title,
+  ids,
   includes,
   contentRating,
   order,
@@ -18,6 +19,7 @@ export const all = ({
   limit?: number;
   offset?: number;
   title?: string;
+  ids?: string[];
   includes?: {
     user?: boolean;
     scanlationGroup?: boolean;
@@ -44,6 +46,11 @@ export const all = ({
     }
     if (title) {
       url.searchParams.append("title", title);
+    }
+    if (ids) {
+      ids.forEach((id) => {
+        url.searchParams.append("ids[]", id);
+      });
     }
     if (includes) {
       if (includes.user) {

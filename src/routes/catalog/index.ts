@@ -41,30 +41,37 @@ catalog.get("/", (c) => {
             "@href": "/v1.2/catalog",
           },
         ],
-        entry: [
-          {
-            title: "Latest updates",
-            id: "latestUpdates",
-            content: "Manga that have been recently updated",
-            link: {
-              "@type":
-                "application/atom+xml;profile=opds-catalog;kind=navigation",
-              "@rel": "subsection",
-              "@href": "/v1.2/latest-updates",
-            },
+        entry: [, {
+          title: "Seasonal",
+          id: "seasonal-catalog",
+          content: "Seasonal manga",
+          link: {
+            "@type":
+              "application/atom+xml;profile=opds-catalog;kind=navigation",
+            "@rel": "subsection",
+            "@href": "/v1.2/seasonal",
           },
-          {
-            title: "Recently added",
-            id: "keepReading",
-            content: "Manga recently added to the catalog",
-            link: {
-              "@type":
-                "application/atom+xml;profile=opds-catalog;kind=navigation",
-              "@rel": "subsection",
-              "@href": "/v1.2/recently-added",
-            },
+        }, {
+          title: "Latest updates",
+          id: "latest-updates-catalog",
+          content: "Manga that have been recently updated",
+          link: {
+            "@type":
+              "application/atom+xml;profile=opds-catalog;kind=navigation",
+            "@rel": "subsection",
+            "@href": "/v1.2/latest-updates",
           },
-        ],
+        }, {
+          title: "Recently added",
+          id: "recently-added-catalog",
+          content: "Manga recently added to the catalog",
+          link: {
+            "@type":
+              "application/atom+xml;profile=opds-catalog;kind=navigation",
+            "@rel": "subsection",
+            "@href": "/v1.2/recently-added",
+          },
+        }],
       },
     }),
   );

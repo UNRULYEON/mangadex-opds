@@ -31,6 +31,7 @@ app.get("/", serveStatic({ path: "./src/static/index.html" }));
 app.route("/health", router.health);
 
 app.route("/v1.2/catalog", router.catalog);
+app.route("/v1.2/seasonal", router.seasonal);
 app.route("/v1.2/latest-updates", router.latestUpdates);
 app.route("/v1.2/recently-added", router.recentlyAdded);
 
