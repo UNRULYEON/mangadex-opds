@@ -137,7 +137,6 @@ manga.get("/:id/language/:lang", async (c: Context) => {
           title: `${chapter.manga.title} - Chapter ${chapter.chapter}`,
           id: chapter.id,
           updated: chapter.updatedAt,
-          content: "cbz - 179.6 MiB",
           link: [
             {
               "@type": "image/jpg",
