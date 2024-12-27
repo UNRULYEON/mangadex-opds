@@ -112,7 +112,9 @@ seasonal.get("/:year/:season", async (c) => {
     stringify({
       feed: {
         "@xmlns": "http://www.w3.org/2005/Atom",
-        id: `seasonal-${year}-${season.charAt(0).toUpperCase() + season.slice(1)}`,
+        id: `seasonal-${year}-${
+          season.charAt(0).toUpperCase() + season.slice(1)
+        }`,
         title: `${year} - ${season}`,
         updated: new Date().toISOString(),
         author: {

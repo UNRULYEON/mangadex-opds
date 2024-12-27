@@ -81,28 +81,31 @@ manga.get("/:id", async (c) => {
           name: "MangaDex OPDS",
           uri: "https://github.com/UNRULYEON/mangadex-opds",
         },
-        entry: result.availableTranslatedLanguages.map((lang: string) => ({
-          title: `${result.title} (${lang.toUpperCase()})`,
-          id: lang,
-          link: [
-            {
-              "@type": "image/jpg",
-              "@rel": "http://opds-spec.org/image/thumbnail",
-              "@href": result.coverUrl,
-            },
-            {
-              "@type": "image/jpg",
-              "@rel": "http://opds-spec.org/image",
-              "@href": result.coverUrl,
-            },
-            {
-              "@type":
-                "application/atom+xml;profile=opds-catalog;kind=navigation",
-              "@rel": "subsection",
-              "@href": `/v1.2/manga/${id}/language/${lang}`,
-            },
-          ],
-        })),
+        entry: result
+          .availableTranslatedLanguages
+          .sort((a, b) => a.localeCompare(b))
+          .map((lang: string) => ({
+            title: `[${lang.toUpperCase()}] - ${result.title}`,
+            id: lang,
+            link: [
+              {
+                "@type": "image/jpg",
+                "@rel": "http://opds-spec.org/image/thumbnail",
+                "@href": result.coverUrl,
+              },
+              {
+                "@type": "image/jpg",
+                "@rel": "http://opds-spec.org/image",
+                "@href": result.coverUrl,
+              },
+              {
+                "@type":
+                  "application/atom+xml;profile=opds-catalog;kind=navigation",
+                "@rel": "subsection",
+                "@href": `/v1.2/manga/${id}/language/${lang}`,
+              },
+            ],
+          })),
       },
     }),
   );
